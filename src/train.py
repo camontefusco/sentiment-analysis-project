@@ -1,3 +1,7 @@
+# Hello, this is the train.py file that loads the sentiment analysis data from a CSV file, 
+# validates it, and splits it into training and testing sets. You can run this script 
+# to ensure your data is properly prepared for model training.
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -32,4 +36,3 @@ if __name__ == "__main__":
     df = load_and_validate_data("sentiments.csv")
     print(df.head())
 
-# Hello Carlos, this is the train.py file that loads the sentiment analysis data from a CSV file, validates it, and splits it into training and testing sets. You can run this script to ensure your data is properly prepared for model training.
