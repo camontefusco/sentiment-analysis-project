@@ -6,8 +6,25 @@ from joblib import load
 
 
 def load_model(model_path: str) -> Any:
-    """Load and return a trained classifier."""
-    return load(model_path)
+    """Load and return a trained classifier.
+
+    Raises:
+        FileNotFoundError: If the model file does not exist.
+        OSError: If the model file cannot be deserialized.
+    """
+    path = Path(model_path)
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Model file not found at '{path}'. "
+            "Run the training script first or pass --model with a valid path."
+        )
+    try:
+        return load(path)
+    except OSError as exc:
+        raise OSError(
+            f"Failed to load model from '{path}'. "
+            "The file may be corrupted or not a valid joblib model."
+        ) from exc
 
 
 def predict_texts(
