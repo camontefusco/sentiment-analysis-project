@@ -1,3 +1,9 @@
+"""Training utilities for the sentiment analysis pipeline.
+
+This module provides helper functions to load labeled text data from CSV
+and split it into training and test sets.
+"""
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
