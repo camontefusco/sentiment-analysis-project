@@ -13,7 +13,7 @@ conda activate sentiment-env
 pip install -r requirements.txt
 
 ## Train
-python src/train.py --data data/train.csv --out models/sentiment.joblib
+python src/train.py --data data/sentiments.csv --out models/sentiment.joblib
 
 ## Predict
 python src/predict.py "I absolutely loved it" "That was awful"

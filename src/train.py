@@ -1,12 +1,13 @@
 import argparse
 import os
+from typing import Tuple
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from joblib import dump
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline, make_pipeline
-from joblib import dump
 
 
 def load_and_validate_data(data_path: str) -> pd.DataFrame:
@@ -21,17 +22,26 @@ def load_and_validate_data(data_path: str) -> pd.DataFrame:
 
 def split_data(
     df: pd.DataFrame,
-) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
+) -> Tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
     """
     Splits the DataFrame into training and testing sets.
     """
     try:
+        # Stratified split is preferred
         X_train, X_test, y_train, y_test = train_test_split(
-            df["text"], df["label"], test_size=0.2, random_state=42, stratify=df["label"]
+            df["text"],
+            df["label"],
+            test_size=0.2,
+            random_state=42,
+            stratify=df["label"],
         )
     except ValueError:
+        # Fallback if stratification fails (e.g., on very small datasets)
         X_train, X_test, y_train, y_test = train_test_split(
-            df["text"], df["label"], test_size=0.2, random_state=42
+            df["text"],
+            df["label"],
+            test_size=0.2,
+            random_state=42,
         )
     return X_train, X_test, y_train, y_test
 
@@ -50,7 +60,7 @@ def train_model(X_train: pd.Series, y_train: pd.Series) -> Pipeline:
 
 def save_model(model: Pipeline, model_path: str) -> None:
     """
-    Saves the trained model to disk.
+    Saves the trained model to a file.
     """
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     dump(model, model_path)
@@ -59,12 +69,13 @@ def save_model(model: Pipeline, model_path: str) -> None:
 
 def main(data_path: str, model_path: str) -> None:
     """
-    Main workflow: load data, split, train, evaluate, save.
+    Main workflow to load, train, evaluate, and save the model.
     """
     df = load_and_validate_data(data_path)
     X_train, X_test, y_train, y_test = split_data(df)
-
     clf = train_model(X_train, y_train)
+
+    # Evaluate and print accuracy
     acc = clf.score(X_test, y_test)
     print(f"Test accuracy: {acc:.3f}")
 
