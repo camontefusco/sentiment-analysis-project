@@ -27,7 +27,10 @@ def split_data(
             df["text"], df["label"], test_size=0.2, random_state=42
         )
     return X_train, X_test, y_train, y_test
-
 if __name__ == "__main__":
-    df = load_and_validate_data("sentiments.csv")
-    print(df.head())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default="data/sentiments.csv")
+    parser.add_argument("--out", default="models/sentiment.joblib")
+
+    args = parser.parse_args()
+    main(data_path=args.data, model_path=args.out)
