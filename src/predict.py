@@ -3,6 +3,7 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 from joblib import load
+from pathlib import Path
 
 
 def load_model(model_path: str) -> Any:

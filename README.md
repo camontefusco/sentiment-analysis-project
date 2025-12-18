@@ -18,7 +18,7 @@ The training script reads labeled text data from `data/train.csv`, vectorizes th
 The prediction script loads this model and returns a sentiment label and probability for each input sentence passed on the command line.
 
 ## Train
-python src/train.py --data data/train.csv --out models/sentiment.joblib
+python src/train.py --data data/sentiments.csv --out models/sentiment.joblib
 
 ## Predict
 python src/predict.py "I absolutely loved it" "That was awful"
